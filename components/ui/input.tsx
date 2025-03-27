@@ -1,6 +1,5 @@
 import * as React from "react"
 import { SfProDisplay } from "sf-pro/display"
-import { SfProText } from "sf-pro/text";
 import { cn } from "@/lib/utils"
 
 function Input({ className, type, ...props }: React.ComponentProps<"input">) {
