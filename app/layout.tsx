@@ -22,10 +22,11 @@ export default function RootLayout({
       <body
         className={`${SfProDisplay.className} antialiased`}
       >
-        <NavigationWeb/>
-        {auth}
+        <NavigationWeb />
         {children}
-        
+        {auth}
+
+
       </body>
     </html>
   );

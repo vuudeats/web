@@ -7,27 +7,23 @@ import { useForm } from "react-hook-form";
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link";
+import { loginSchema } from "@/schemas";
 
-const formSchema = z.object({
-  email: z.string().email(),
-})
+export default function LoginForm() {
 
-export default function LoginClient() {
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
     },
   })
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: z.infer<typeof loginSchema>) => {
     console.log(values)
     
   }
 
   return (
-    <div className="flex justify-center items-center bg-black/50 h-screen w-full absolute">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -58,6 +54,5 @@ export default function LoginClient() {
           </div>
         </form>
       </Form>
-    </div>
   );
 }
