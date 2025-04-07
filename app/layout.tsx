@@ -3,6 +3,8 @@ import "./globals.css";
 import { SfProDisplay } from "sf-pro/display";
 import { ReactNode } from "react";
 import NavigationWeb from "@/components/navigation/web/navigation-web";
+import SidebarWeb from "@/components/navigation/web/sidebar-web";
+import SearchWeb from "@/components/navigation/web/search-web";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,8 +25,11 @@ export default function RootLayout({
         className={`${SfProDisplay.className} antialiased`}
       >
         <NavigationWeb />
-        {children}
-        {auth}
+        <div className="px-20">
+          {children}
+        </div>
+        
+        {/* {auth} */}
 
 
       </body>

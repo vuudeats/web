@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import LoginForm from "@/components/form/login-form";
+import { Button } from "@/components/ui/button";
 
 
 export default function ParallelLoginClient() {
@@ -12,7 +13,7 @@ export default function ParallelLoginClient() {
   }
 
   return (
-    <div className="flex justify-center items-center bg-black/50 h-screen w-full absolute top-0">
+    <div className="flex justify-center items-center bg-black/10 backdrop-blur-[2px] h-screen w-full absolute top-0">
       <LoginForm/>
     </div>
   );

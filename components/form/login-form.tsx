@@ -15,6 +15,7 @@ export default function LoginForm() {
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
+      password: ""
     },
   })
 
@@ -27,9 +28,9 @@ export default function LoginForm() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="bg-white p-10 w-md flex flex-col gap-4"
+          className="bg-white p-10 w-md flex flex-col gap-2"
         >
-          <h1 className="text-3xl font-semibold">Melde dich mit deiner Email-Adresse an um fortzufahren.</h1>
+          <h1 className="text-3xl font-semibold mb-3">Melde dich mit deiner Email-Adresse an um fortzufahren.</h1>
           <FormField
             control={form.control}
             name="email"
@@ -39,14 +40,27 @@ export default function LoginForm() {
                   <FormControl>
                     <Input placeholder="Geben Sie Ihre Email-Adresse ein" {...field} />
                   </FormControl>
+                </div>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex flex-col items-end gap-2">
+                  <FormControl>
+                    <Input placeholder="Geben Sie Ihr Passwort ein" {...field} />
+                  </FormControl>
                   <FormDescription>
-                    <Link className="text-[12px] m-0" href={"/registration"}>Noch keinen Account?</Link>
+                    <Link className="text-[12px] m-0" href={"/register"}>Noch keinen Account?</Link>
                   </FormDescription>
                 </div>
               </FormItem>
             )}
           />
-          <div className="flex flex-col gap-2 w-full">
+          <div className="flex flex-col gap-2 w-full mt-3">
             <Button type="submit">Weiter</Button>
             <p className="w-full text-center opacity-50">----- oder -----</p>
             <Button variant={"secondary"}>Weiter mit Google</Button>
