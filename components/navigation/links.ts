@@ -5,7 +5,7 @@ export const NavigationLinks = [
     },
     {
         "name": "Restaurant hinzufügen",
-        "href": "/"
+        "href": "/add-restaurant"
     },
 ]
 

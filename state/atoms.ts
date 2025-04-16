@@ -1,3 +1,3 @@
-import { atom } from "jotai"
+import { atomWithStorage } from "jotai/utils"
 
-export const cityAtom = atom("");
+export const cityAtom = atomWithStorage("address", "");

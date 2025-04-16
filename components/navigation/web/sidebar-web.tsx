@@ -10,8 +10,9 @@ type SidebarWebType = {
 
 export default function SidebarWeb({city}: SidebarWebType) {
     const router = useRouter()
-    return <div className="w-full md:w-2/5 lg:w-1/5">
-        <p className="text-4xl font-bold">{city}<span className="text-sm relative -z-10 top-2 font-normal text-[#6E6E73]">46414</span></p>
+    return <div className="w-full md:w-2/5 lg:w-1/5 ">
+        <p className="text-4xl font-bold">{city}</p>
+        {/* <span className="text-sm relative -z-10 top-2 font-normal text-[#6E6E73]">46414</span> */}
         
         <div className="flex flex-col mt-5 pr-10">
             <Tabs defaultValue="delivery">

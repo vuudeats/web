@@ -1,6 +1,5 @@
 import { db } from "@/lib/db"
 import { registerSchema } from "@/schemas";
-import { User } from "@prisma/client";
 import { z } from "zod";
 
 export const getUserByEmail = async (email: string) => {
@@ -12,7 +11,7 @@ export const getUserByEmail = async (email: string) => {
     }
 };
 
-export const getUserById = async (id: number) =>{
+export const getUserById = async (id: string) =>{
     try{
         const user = await db.user.findUnique({where: {id}});
         return user;
@@ -36,3 +35,13 @@ export const createUser = async ({ email, firstname, lastname, password }: z.inf
         return null;
     }
 };
+
+export const getUserRoleById = async (id: string) => {
+    try{
+        const user = await db.user.findUnique({where: {id}});
+        return user?.role;
+    }
+    catch{
+        return null;
+    }
+}

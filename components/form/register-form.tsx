@@ -8,7 +8,7 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link";
 import { registerSchema } from "@/schemas";
-import { register } from "@/actions/register";
+import { register } from "@/actions/user/register";
 import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {
@@ -93,7 +93,7 @@ export default function RegisterForm() {
                         <FormItem>
                             <div className="flex flex-col items-end gap-2">
                                 <FormControl>
-                                    <Input placeholder="Passwort" {...field} />
+                                    <Input type="password" placeholder="Passwort" {...field} />
                                 </FormControl>
                                 <FormDescription>
                                     <Link className="text-[12px] m-0" href={"/login"}>Schon einen Account?</Link>

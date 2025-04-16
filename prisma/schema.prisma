@@ -14,9 +14,49 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   email     String   @unique
   firstname String?
   lastname  String?
   password  String?
+  role      Role     @default(CUSTOMER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Restaurant {
+  id        String   @id @default(uuid())
+  name      String?
+  meals     Meal[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Meal {
+  id           String     @id @default(uuid())
+  name         String
+  description  String?
+  price        Float
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model RestaurantRequest {
+  id                String   @id @default(uuid())
+  ownerEmail        String   @unique
+  restaurantName    String
+  restaurantAddress String
+  deliveryMethod    String
+  ownerFirstname    String
+  ownerLastname     String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+enum Role {
+  ADMIN
+  CUSTOMER
+  RESTAURANT_OWNER
 }
