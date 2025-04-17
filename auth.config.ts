@@ -3,9 +3,13 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import { db } from '@/lib/db'
 import { verifyPassword } from '@/services/auth'
 import type { NextAuthOptions } from 'next-auth'
+import NextAuth from 'next-auth'
 
 export const authConfig: NextAuthOptions = {
   adapter: PrismaAdapter(db),
+  session: {
+    strategy: "jwt"
+  },
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -22,30 +26,42 @@ export const authConfig: NextAuthOptions = {
           where: { email: credentials.email },
         })
 
-        // Überprüfe, ob der Benutzer existiert und ob das Passwort korrekt ist
+        console.log('Found user:', user)
+
         if (!user || !user.password) return null
 
         const valid = await verifyPassword(credentials.password, user.password)
         if (!valid) return null
 
-        return user // Stelle sicher, dass der vollständige User zurückgegeben wird
+        return {
+          id: user.id,
+          email: user.email,
+          role: user.role,
+        }
       },
     }),
   ],
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id // Füge die Benutzer-ID hinzu
-        token.role = user.role // Stelle sicher, dass die Rolle vorhanden ist
+        token.id = user.id
+        token.role = user.role
+        console.log('JWT Token:', token)
       }
       return token
     },
     async session({ session, token }) {
       if (token && session.user) {
-        session.user.id = token.id as string // Setze die Benutzer-ID in die Session
-        session.user.role = token.role as string // Setze die Rolle in die Session
+        session.user.id = token.id as string
+        session.user.role = token.role as string
+        console.log('Session:', session)
       }
       return session
     },
-  }
-}
+  },
+  pages: {
+    signIn: '/login',
+  },
+} 
+
+export const { auth, signIn, signOut } = NextAuth(authConfig) 

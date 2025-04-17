@@ -8,11 +8,23 @@ import { cn } from "@/lib/utils";
 import { SfProText } from "sf-pro/text";
 import { cityAtom } from "@/state/atoms";
 import { useAtom } from "jotai";
-import { PersonIcon } from "@radix-ui/react-icons";
+import { ExitIcon, PersonIcon } from "@radix-ui/react-icons";
+import { useSession, signOut } from "next-auth/react";
+import { isAdmin } from "@/lib/auth";
+import { useEffect, useState } from "react";
 
 export default function NavigationWeb() {
     const [city, setCity] = useAtom(cityAtom);
     const router = useRouter();
+    const {data: session, status} = useSession();
+    console.log('Session status:', status);
+    console.log('Session data:', session);
+    const isAdmin = session?.user?.role === 'ADMIN';
+
+    const handleSignOut = async () => {
+        await signOut({ redirect: false });
+        router.push('/');
+    };
 
     return <div className="hidden drop-shadow-xs md:flex w-full bg-white backdrop-blur-sm fixed px-20 p-1 justify-between items-center">
         <div className="flex items-center">
@@ -32,10 +44,24 @@ export default function NavigationWeb() {
                 <Input placeholder="Durchsuche vuud" className={cn(SfProText.className, "py-2 px-3 rounded-full text-xs")} />
             }
         </div>
+        {isAdmin && (
+            <Button variant="ghost" size="md">Admin Panel</Button>
+        )}
         <div className="flex gap-1">
-            <Button onClick={() => router.push("/register")} variant={"ghost"} size={"md"}>Registrieren</Button>
-            <Button onClick={() => router.push("/login")} size={"md"}>Anmelden</Button>
-
+            {!session?.user ? (
+                <>
+                    <Button onClick={() => router.push("/register")} variant={"ghost"} size={"md"}>Registrieren</Button>
+                    <Button onClick={() => router.push("/login")} size={"md"}>Anmelden</Button>
+                </>
+            ) : (
+                <>
+                    <Button onClick={() => router.push("/profile")} variant={"ghost"} size={"md"}>Profile</Button>
+                    <Button onClick={handleSignOut} variant={"ghost"} size={"md"}>
+                        <ExitIcon className="mr-2" />
+                        Abmelden
+                    </Button>
+                </>
+            )}
         </div>
     </div>
 }

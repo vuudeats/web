@@ -11,6 +11,7 @@ import { RestaurantCard } from "@/components/ui/restaurant-card";
 import { cityAtom } from "@/state/atoms";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useAtom } from "jotai";
+import { SessionProvider, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -28,6 +29,10 @@ export default function Home() {
   const [suggestions, setSuggestions] = useState<GooglePlace[]>([]);
   const [isSuggested, setSuggested] = useState(false);
 
+  const { data: session, status } = useSession();
+  console.log('Session status:', status);
+  console.log('Session data:', session?.user?.role);
+  const isAdmin = session?.user?.role === 'ADMIN';
 
   useEffect(() => {
 
@@ -60,48 +65,48 @@ export default function Home() {
   return (
     <div className="md:flex flex-col h-screen py-10">
       {/* <div className="bg-[url(/food4k.jpg)] w-full rounded-2xl"> */}
-        <div className="w-full flex-col flex justify-center items-center bg-white/80 backdrop-blur-xs py-20">
-          <p className="text-4xl font-bold">Du hast Hunger und willst was bestellen? Dann mal los...</p>
-          <p className="text-sm text-muted-foreground">Bei Risiken und Nebenwirkungen fragen Sie Ihren Arzt oder Apotheker</p>
-          <div className="w-1/3 flex gap-2">
-            <div className="flex w-full gap-2 relative my-4">
-              <Input
-                value={inputValue}
-                onChange={(e) => {
-                  setInputValue(e.target.value)
-                  setSuggested(false);
-                }}
-                className="rounded-full"
-                placeholder="Geben Sie Ihre Adresse ein."
-              />
-              {suggestions.length > 0 && !isSuggested && (
-                <DropdownMenu>
-                  {suggestions.map((suggestion, index) => (
-                    <DropdownItem
-                      key={index}
-                      onClick={() => {
-                        handleSubmit(suggestion.placeId)
-                        handleSuggestionClick(suggestion.name)
-                        setCity(suggestion.name)
-                        setPlaceIdValue(suggestion.placeId)
-                        setSuggested(true);
-                      }}
-                    >
-                      {suggestion.name}
-                    </DropdownItem>
-                  ))}
-                </DropdownMenu>
-              )}
-            </div>
-            {/* <Button onClick={() => handleSubmit()} className="rounded-full" variant={"custom"}>
+      <div className="w-full flex-col flex justify-center items-center bg-white/80 backdrop-blur-xs py-20">
+        <p className="text-4xl font-bold">Du hast Hunger und willst was bestellen? Dann mal los...</p>
+        <p className="text-sm text-muted-foreground">Bei Risiken und Nebenwirkungen fragen Sie Ihren Arzt oder Apotheker</p>
+        <div className="w-1/3 flex gap-2">
+          <div className="flex w-full gap-2 relative my-4">
+            <Input
+              value={inputValue}
+              onChange={(e) => {
+                setInputValue(e.target.value)
+                setSuggested(false);
+              }}
+              className="rounded-full"
+              placeholder="Geben Sie Ihre Adresse ein."
+            />
+            {suggestions.length > 0 && !isSuggested && (
+              <DropdownMenu>
+                {suggestions.map((suggestion, index) => (
+                  <DropdownItem
+                    key={index}
+                    onClick={() => {
+                      handleSubmit(suggestion.placeId)
+                      handleSuggestionClick(suggestion.name)
+                      setCity(suggestion.name)
+                      setPlaceIdValue(suggestion.placeId)
+                      setSuggested(true);
+                    }}
+                  >
+                    {suggestion.name}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            )}
+          </div>
+          {/* <Button onClick={() => handleSubmit()} className="rounded-full" variant={"custom"}>
             <MagnifyingGlassIcon />
             Suchen
             </Button> */}
-          </div>
-          {/* <div className="w-full h-96 overflow-hidden rounded-2xl mt-5">
+        </div>
+        {/* <div className="w-full h-96 overflow-hidden rounded-2xl mt-5">
         <Image className="w-full" src={"/food4k.jpg"} alt="" width={1000} height={1000} />
       </div> */}
-        </div>
+      </div>
       {/* </div> */}
     </div>
   );

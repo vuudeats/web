@@ -8,11 +8,15 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link";
 import { loginSchema } from "@/schemas";
-import { login } from "@/actions/user/login";
 import { useRouter } from "next/navigation";
+import { signIn, useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 export default function LoginForm() {
   const router = useRouter()
+
+  const {data: session, status} = useSession();
+  
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -21,17 +25,29 @@ export default function LoginForm() {
     },
   })
 
+
+  useEffect(()=>{
+    if(session?.user) return router.push("/")
+  })
+
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
     try {
-      const data = await login(values);
-      if (data.success) {
-        router.push("/")
-        console.log(data.message);
+      console.log('Attempting to sign in with:', values.email);
+      const result = await signIn("credentials", {
+        ...values,
+        redirect: false
+      })
+      
+      console.log('Sign in result:', result);
+      
+      if (result?.error) {
+        console.error('Login error:', result.error);
       } else {
-        console.error(data.error.message);
+        console.log('Login successful, redirecting...');
+        router.push("/")
       }
     } catch (error) {
-      console.error(error);
+      console.error('Login error:', error);
     }
   }
 
