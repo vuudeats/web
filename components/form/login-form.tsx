@@ -10,9 +10,11 @@ import Link from "next/link";
 import { loginSchema } from "@/schemas";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function LoginForm() {
+  const [message, setMessage] = useState("");
+
   const router = useRouter()
 
   const {data: session, status} = useSession();
@@ -35,13 +37,14 @@ export default function LoginForm() {
       console.log('Attempting to sign in with:', values.email);
       const result = await signIn("credentials", {
         ...values,
+        email: values.email.toLowerCase(),
         redirect: false
       })
-      
+      console.log(result)
       console.log('Sign in result:', result);
       
       if (result?.error) {
-        console.error('Login error:', result.error);
+        setMessage("Email oder Passwort sind falsch!")
       } else {
         console.log('Login successful, redirecting...');
         router.push("/")
@@ -57,12 +60,13 @@ export default function LoginForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="bg-white p-10 w-md flex flex-col gap-2"
       >
-        <h1 className="text-3xl font-semibold mb-3">Melde dich mit deiner Email-Adresse an um fortzufahren.</h1>
+        <h1 className="text-3xl font-semibold">Melde dich mit deiner Email-Adresse an um fortzufahren.</h1>
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
+              <p className="text-md text-red-500 w-full">{message}</p>
               <div className="flex flex-col items-end gap-0">
                 <FormControl>
                   <Input placeholder="Geben Sie Ihre Email-Adresse ein" {...field} />

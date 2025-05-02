@@ -27,3 +27,11 @@ export const createRestaurantRequest = async ({
         return null;
     }
 }
+
+export const getAllRestaurantRequests = async () =>{
+    try{
+        return await db.restaurantRequest.findMany()
+    } catch (error) {
+        return null;
+    }
+}

@@ -34,7 +34,7 @@ export default function NavigationWeb() {
                     return <Button
                         key={i}
                         variant={"link"}
-                        onClick={() => router.push(link.href)}
+                        onClick={() => router.push(`/de/${link.href}`)}
                     >
                         {link.name}
                     </Button>
@@ -45,17 +45,17 @@ export default function NavigationWeb() {
             }
         </div>
         {isAdmin && (
-            <Button variant="ghost" size="md">Admin Panel</Button>
+            <Button onClick={()=> router.push(`/de/admin/`)} variant="ghost" size="md">Admin Panel</Button>
         )}
         <div className="flex gap-1">
             {!session?.user ? (
                 <>
-                    <Button onClick={() => router.push("/register")} variant={"ghost"} size={"md"}>Registrieren</Button>
-                    <Button onClick={() => router.push("/login")} size={"md"}>Anmelden</Button>
+                    <Button onClick={() => router.push("/de/register")} variant={"ghost"} size={"md"}>Registrieren</Button>
+                    <Button onClick={() => router.push("/de/login")} size={"md"}>Anmelden</Button>
                 </>
             ) : (
                 <>
-                    <Button onClick={() => router.push("/profile")} variant={"ghost"} size={"md"}>Profile</Button>
+                    <Button onClick={() => router.push("/de/profile")} variant={"ghost"} size={"md"}>Profile</Button>
                     <Button onClick={handleSignOut} variant={"ghost"} size={"md"}>
                         <ExitIcon className="mr-2" />
                         Abmelden

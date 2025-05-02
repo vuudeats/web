@@ -26,10 +26,13 @@ export default function RegisterForm() {
     const onSubmit = async (values: z.infer<typeof registerSchema>) => {
         try {
             console.log(values);
-            const data = await register(values); // Warten, bis Promise aufgelöst wird
+            const data = await register({
+                ...values,
+                email: values.email.toLowerCase()
+            }); // Warten, bis Promise aufgelöst wird
     
             if (data.success) {
-                router.push("/login");
+                router.push("/de/login");
                 console.log(data.message);
             } else {
                 console.error(data.error.message);

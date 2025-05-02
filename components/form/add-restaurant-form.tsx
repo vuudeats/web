@@ -9,12 +9,13 @@ import { addRestaurantSchema } from "@/schemas";
 import { z } from "zod";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
 import { useEffect, useState } from "react";
-import { GooglePlace } from "@/app/page";
+
 import { getAddress } from "@/actions/user/google/get-address";
 import { DropdownMenu } from "../ui/dropdown-menu";
 import { DropdownItem } from "../ui/dropdown-item";
 import { addRestaurantRequest } from "@/actions/user/add-restaurant-request";
 import { useRouter } from "next/navigation";
+import { GooglePlace } from "@/app/(web)/de/(customer)/page";
 
 export default function AddRestaurantForm() {
     const [inputValue, setInputValue] = useState("");

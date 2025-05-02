@@ -5,7 +5,7 @@ import { verifyPassword } from '@/services/auth'
 import type { NextAuthOptions } from 'next-auth'
 import NextAuth from 'next-auth'
 
-export const authConfig: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
   session: {
     strategy: "jwt"
@@ -64,4 +64,4 @@ export const authConfig: NextAuthOptions = {
   },
 } 
 
-export const { auth, signIn, signOut } = NextAuth(authConfig) 
+export const { auth, signIn, signOut } = NextAuth(authOptions) 

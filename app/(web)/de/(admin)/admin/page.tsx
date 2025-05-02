@@ -1,7 +1,9 @@
 "use client"
 
+import { AppSidebar } from "@/components/ui/app-sidebar"
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { useEffect } from "react"
 
 export default function AdminPage() {
@@ -14,7 +16,9 @@ export default function AdminPage() {
     
     return <div>
         {isAdmin && (
-        <div>admin panel</div>
+            <div>
+                asdasda
+            </div>
         )}
     </div>
 }
