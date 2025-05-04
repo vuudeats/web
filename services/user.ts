@@ -1,7 +1,5 @@
 import { db } from "@/lib/db"
 import { registerSchema } from "@/schemas";
-import { getToken } from "next-auth/jwt";
-import { cookies } from "next/headers";
 import { z } from "zod";
 
 export const getUserByEmail = async (email: string) => {
@@ -47,15 +45,3 @@ export const getUserRoleById = async (id: string) => {
         return null;
     }
 }
-
-export async function getCurrentUser() {
-    const token = await getToken({ req: { cookies } as any })
-    console.log("TOKEN:", token) // Debug
-  
-    if (!token?.email) return null
-  
-    // Optional: hole User aus DB
-    return await db.user.findUnique({
-      where: { email: token.email },
-    })
-  }

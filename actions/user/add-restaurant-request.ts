@@ -1,11 +1,11 @@
 "use server"
 import { z } from "zod";
-import { addRestaurantSchema } from "@/schemas";
+import { restaurantRequestSchema } from "@/schemas";
 import { response } from "@/lib/utils";
 import { createRestaurantRequest } from "@/services/restaurant-request";
 
-export const addRestaurantRequest = async (values: z.infer<typeof addRestaurantSchema>, placeId: string) => {
-    const validatedFields = addRestaurantSchema.safeParse(values);
+export const addRestaurantRequest = async (values: z.infer<typeof restaurantRequestSchema>, placeId: string, userId: string) => {
+    const validatedFields = restaurantRequestSchema.safeParse(values);
 
     if (!validatedFields.success) {
         return response({
@@ -18,19 +18,14 @@ export const addRestaurantRequest = async (values: z.infer<typeof addRestaurantS
     }
 
     const { restaurantName,
-        deliveryMethod,
-        ownerFirstname,
-        ownerLastname,
-        ownerEmail
+        deliveryMethod
     } = validatedFields.data
 
     const restaurantRequest = await createRestaurantRequest({
         restaurantName,
         restaurantAddress: placeId,
         deliveryMethod,
-        ownerFirstname,
-        ownerLastname,
-        ownerEmail
+        userId
     })
     if(restaurantRequest){
         console.log("User created successfully:", restaurantRequest);

@@ -6,7 +6,7 @@ type DropdownItemType = {
 
 }
 
-export const DropdownItem = ({ onClick, children }: DropdownItemType) => {
+export const DropdownItemVuud = ({ onClick, children }: DropdownItemType) => {
     return (
         <li
             className="p-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2"

@@ -28,7 +28,7 @@ export default function CityPage() {
     return <div className="md:flex justify-between">
         <SidebarWeb city={address} />
         <div className="w-full lg:w-4/5 flex flex-wrap justify-start">
-            
+        
         </div>
         <SearchWeb value={address} />
     </div>

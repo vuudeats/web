@@ -14,22 +14,28 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  firstname String?
-  lastname  String?
-  password  String?
-  role      Role     @default(CUSTOMER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                String              @id @default(uuid())
+  email             String              @unique
+  firstname         String?
+  lastname          String?
+  password          String?
+  role              Role                @default(CUSTOMER)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  RestaurantRequest RestaurantRequest[]
+  Restaurant        Restaurant[]
 }
 
 model Restaurant {
-  id        String   @id @default(uuid())
-  name      String?
-  meals     Meal[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String   @id @default(uuid())
+  name           String
+  address        String
+  deliveryMethod String
+  meals          Meal[]
+  user           User     @relation(fields: [userId], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  userId         String
 }
 
 model Meal {
@@ -45,12 +51,11 @@ model Meal {
 
 model RestaurantRequest {
   id                String   @id @default(uuid())
-  ownerEmail        String   @unique
   restaurantName    String
   restaurantAddress String
   deliveryMethod    String
-  ownerFirstname    String
-  ownerLastname     String
+  userId            String
+  user              User     @relation(fields: [userId], references: [id])
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 }

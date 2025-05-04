@@ -1,15 +1,15 @@
+"use server"
 import { db } from "@/lib/db"
 import { z } from "zod"
-import { addRestaurantSchema } from "@/schemas";
+import { restaurantRequestSchema } from "@/schemas";
 
 export const createRestaurantRequest = async ({
     restaurantName,
     restaurantAddress,
     deliveryMethod,
-    ownerFirstname,
-    ownerLastname,
-    ownerEmail }:
-    z.infer<typeof addRestaurantSchema>) => {
+    userId
+}:
+    z.infer<typeof restaurantRequestSchema>) => {
 
     try {
         return await db.restaurantRequest.create({
@@ -17,9 +17,7 @@ export const createRestaurantRequest = async ({
                 restaurantName,
                 restaurantAddress,
                 deliveryMethod,
-                ownerFirstname,
-                ownerLastname,
-                ownerEmail
+                userId
             },
         });
     } catch (error) {
@@ -28,10 +26,38 @@ export const createRestaurantRequest = async ({
     }
 }
 
-export const getAllRestaurantRequests = async () =>{
-    try{
+export const getRestaurantRequestById = async (id: string) => {
+    try {
+        const request = await db.restaurantRequest.findUnique({
+            where: { id },
+            include: {
+                user: true
+            }
+        })
+        return request
+    } catch (error) {
+        console.error(error)
+        return null;
+    }
+}
+
+export const getAllRestaurantRequests = async () => {
+    try {
         return await db.restaurantRequest.findMany()
     } catch (error) {
         return null;
     }
 }
+
+export const deleteRestaurantRequestById = async (id: string) => {
+    try {
+        console.log(id);
+        await db.restaurantRequest.delete({
+            where: { id },
+        });
+        return true;
+    } catch (error) {
+        console.error("Error deleting restaurant request:", error);
+        return false;
+    }
+};

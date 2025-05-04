@@ -12,7 +12,7 @@ import {
 import { Profile } from "./profile"
 import { User } from "@prisma/client"
 import { Button } from "./button"
-import { ArrowBigLeftDash, HomeIcon, ScaleIcon, UserCog, Utensils } from "lucide-react"
+import { ArrowBigLeftDash, HomeIcon, Salad, ScaleIcon, UserCog, Utensils } from "lucide-react"
 import Link from "next/link"
 
 const items = [
@@ -25,6 +25,11 @@ const items = [
         title: "Accounts",
         url: "/accounts",
         icon: UserCog,
+    },
+    {
+        title: "Restaurants",
+        url: "/restaurants",
+        icon: Salad,
     },
     {
         title: "Restaurant Anfragen",

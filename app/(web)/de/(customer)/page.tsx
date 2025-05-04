@@ -4,8 +4,8 @@ import LoginForm from "@/components/form/login-form";
 import SearchWeb from "@/components/navigation/web/search-web";
 import SidebarWeb from "@/components/navigation/web/sidebar-web";
 import { Button } from "@/components/ui/button";
-import { DropdownItem } from "@/components/ui/dropdown-item";
-import { DropdownMenu } from "@/components/ui/dropdown-menu";
+import { DropdownItemVuud } from "@/components/ui/dropdown-item-vuud";
+import { DropdownMenuVuud } from "@/components/ui/dropdown-menu-vuud";
 import { Input } from "@/components/ui/input";
 import { RestaurantCard } from "@/components/ui/restaurant-card";
 import { cityAtom } from "@/state/atoms";
@@ -75,9 +75,9 @@ export default function Home() {
               placeholder="Geben Sie Ihre Adresse ein."
             />
             {suggestions.length > 0 && !isSuggested && (
-              <DropdownMenu>
+              <DropdownMenuVuud>
                 {suggestions.map((suggestion, index) => (
-                  <DropdownItem
+                  <DropdownItemVuud
                     key={index}
                     onClick={() => {
                       handleSubmit(suggestion.placeId)
@@ -88,9 +88,9 @@ export default function Home() {
                     }}
                   >
                     {suggestion.name}
-                  </DropdownItem>
+                  </DropdownItemVuud>
                 ))}
-              </DropdownMenu>
+              </DropdownMenuVuud>
             )}
           </div>
           {/* <Button onClick={() => handleSubmit()} className="rounded-full" variant={"custom"}>

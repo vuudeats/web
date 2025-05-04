@@ -2,16 +2,19 @@ import { getAllRestaurantRequests } from "@/services/restaurant-request"
 import { getServerSession } from "next-auth"
 
 import { redirect } from "next/navigation"
-import RestaurantRequestsClient from "./client"
-import { authOptions } from "@/auth.config"
-import { columns } from "./columns"
 
-export default async function RestaurantRequestsPage() {
+import { authOptions } from "@/auth.config"
+import RestaurantClient from "./client"
+import { columns } from "./columns"
+import { getAllRestaurants } from "@/services/restaurant"
+
+
+export default async function RestaurantPage() {
     const session = await getServerSession(authOptions)
     if(session?.user.role !== "ADMIN") return redirect("/de/login")
 
-    const data = await getAllRestaurantRequests()
+    const data = await getAllRestaurants()
     console.log(data)
 
-    return <RestaurantRequestsClient data={data} columns={columns} />
+    return <RestaurantClient columns={columns} data={data}/>
 }

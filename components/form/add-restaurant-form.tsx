@@ -5,17 +5,19 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addRestaurantSchema } from "@/schemas";
+import { restaurantRequestSchema } from "@/schemas";
 import { z } from "zod";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
 import { useEffect, useState } from "react";
 
 import { getAddress } from "@/actions/user/google/get-address";
-import { DropdownMenu } from "../ui/dropdown-menu";
-import { DropdownItem } from "../ui/dropdown-item";
+import { DropdownMenuVuud } from "../ui/dropdown-menu-vuud";
+import { DropdownItemVuud } from "../ui/dropdown-item-vuud";
 import { addRestaurantRequest } from "@/actions/user/add-restaurant-request";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { GooglePlace } from "@/app/(web)/de/(customer)/page";
+import { DeliveryMethodSelection } from "../ui/delivery-method-selection";
+import { useSession } from "next-auth/react";
 
 export default function AddRestaurantForm() {
     const [inputValue, setInputValue] = useState("");
@@ -23,15 +25,17 @@ export default function AddRestaurantForm() {
     const [isSuggested, setSuggested] = useState(false);
     const [placeId, setPlaceId] = useState("");
 
+    const {data: session, status} = useSession()
     const router = useRouter()
 
+    if(!session?.user) return redirect("/de/login");
+    
     useEffect(() => {
 
         if (inputValue.length > 0) {
             const fetchSuggestions = async () => {
                 try {
                     const data = await getAddress(inputValue);
-                    
                     setSuggestions(data);
                 } catch (error) {
                     console.error('Error fetching suggestions:', error);
@@ -44,27 +48,30 @@ export default function AddRestaurantForm() {
         }
     }, [inputValue]);
 
-    const form = useForm<z.infer<typeof addRestaurantSchema>>({
-        resolver: zodResolver(addRestaurantSchema),
+    const form = useForm<z.infer<typeof restaurantRequestSchema>>({
+        resolver: zodResolver(restaurantRequestSchema),
         defaultValues: {
             restaurantName: "",
             restaurantAddress: "",
             deliveryMethod: "",
-            ownerFirstname: "",
-            ownerLastname: "",
-            ownerEmail: ""
+            userId: ""
         },
     })
 
-    const onSubmit = async (values: z.infer<typeof addRestaurantSchema>) => {
+    const onSubmit = async (values: z.infer<typeof restaurantRequestSchema>) => {
+        console.log("submit")
         try{
-            const data = await addRestaurantRequest(values, placeId);
+            const data = await addRestaurantRequest(
+                values, 
+                placeId, 
+                session.user.id
+            );
             
             if(!data.success) return console.error(data.error.message);
             console.log(data.message);
             router.push("/")
-        }catch{
-
+        }catch(error){
+            console.log(error)
         }
     }
     return (
@@ -105,9 +112,9 @@ export default function AddRestaurantForm() {
                             </FormControl>
 
                             {suggestions.length > 0 && !isSuggested && (
-                                <DropdownMenu>
+                                <DropdownMenuVuud>
                                     {suggestions.map((suggestion, index) => (
-                                        <DropdownItem
+                                        <DropdownItemVuud
                                             key={index}
                                             onClick={() => {
                                                 form.setValue("restaurantAddress", suggestion.name);
@@ -118,9 +125,9 @@ export default function AddRestaurantForm() {
                                             }}
                                         >
                                             {suggestion.name}
-                                        </DropdownItem>
+                                        </DropdownItemVuud>
                                     ))}
-                                </DropdownMenu>
+                                </DropdownMenuVuud>
                             )}
                         </FormItem>
                     )}
@@ -131,60 +138,12 @@ export default function AddRestaurantForm() {
                     render={({ field }) => (
                         <FormItem className="w-full h-9">
                             <FormControl>
-                                <Select value={field.value} onValueChange={field.onChange}>
-                                    <SelectTrigger className="w-full p-5">
-                                        <SelectValue placeholder="Liefermethode" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            <SelectLabel>Liefermethode</SelectLabel>
-                                            <SelectItem value="pickup">Nur Abholung</SelectItem>
-                                            <SelectItem value="deliver">Nur Lieferung</SelectItem>
-                                            <SelectItem value="both">Abholung und Lieferung</SelectItem>
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
+                                <DeliveryMethodSelection field={field}/>
                             </FormControl>
                         </FormItem>
                     )}
                 />
 
-                <p className=" font-semibold mt-6">Informationen zum Inhabers</p>
-                <div className="flex gap-2 w-full">
-                    <FormField
-                        control={form.control}
-                        name="ownerFirstname"
-                        render={({ field }) => (
-                            <FormItem className="w-full">
-                                <FormControl>
-                                    <Input placeholder="Vorname des Inhabers" {...field} />
-                                </FormControl>
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="ownerLastname"
-                        render={({ field }) => (
-                            <FormItem className="w-full">
-                                <FormControl>
-                                    <Input placeholder="Nachname des Inhabers" {...field} />
-                                </FormControl>
-                            </FormItem>
-                        )}
-                    />
-                </div>
-                <FormField
-                    control={form.control}
-                    name="ownerEmail"
-                    render={({ field }) => (
-                        <FormItem className="w-full">
-                            <FormControl>
-                                <Input placeholder="Email des Inhabers" {...field} />
-                            </FormControl>
-                        </FormItem>
-                    )}
-                />
                 <div className="flex flex-col gap-2 w-full mt-3">
                     <Button type="submit">Weiter</Button>
                 </div>

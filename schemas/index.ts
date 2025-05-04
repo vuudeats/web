@@ -14,11 +14,18 @@ export const registerSchema = z.object({
   password: z.string().min(8, "Mindestens 8 Passwordzeichen"),
 })
 
-export const addRestaurantSchema = z.object({
+export const restaurantRequestSchema = z.object({
   restaurantName: z.string(),
   restaurantAddress: z.string(),
   deliveryMethod: z.string(),
-  ownerFirstname: z.string(),
-  ownerLastname: z.string(),
-  ownerEmail: z.string()
+  userId: z.string()
+})
+export const mealSchema = z.object({
+  name: z.string(),
+  price: z
+  .string()
+  .transform((val) => parseFloat(val.replace(",", ".")))
+  .refine((val) => !isNaN(val) && val > 0, { message: "Preis muss positiv sein" }),
+  description: z.string().optional(),
+
 })

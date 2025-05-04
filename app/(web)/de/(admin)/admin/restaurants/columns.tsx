@@ -7,24 +7,24 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { createRestaurantByRequest } from "@/services/restaurant"
 import { deleteRestaurantRequestById } from "@/services/restaurant-request"
 import { getUserById } from "@/services/user"
-import { RestaurantRequest } from "@prisma/client"
+import { Restaurant, RestaurantRequest } from "@prisma/client"
 import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 
-export const columns: ColumnDef<RestaurantRequest>[] = [
+export const columns: ColumnDef<Restaurant>[] = [
     {
         accessorKey: "id",
         header: "ID",
     },
     {
-        accessorKey: "userId",
-        header: "User",
+        accessorKey: "name",
+        header: "Name",
     },
     {
-        accessorKey: "restaurantName",
-        header: "Restaurant",
+        accessorKey: "createdAt",
+        header: "Erstellt am",
     },
     {
         id: "actions",
@@ -48,15 +48,6 @@ export const columns: ColumnDef<RestaurantRequest>[] = [
                             Request ID kopieren
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem variant="default" onClick={async () => {
-                            try {
-                                const confirmed = await confirmRestaurant(request)
-                                if (confirmed) return console.log("Restaurant request confirmed successfully!")
-                                console.log("Restaurant request confirm failed...")
-                            } catch (error) {
-                                console.error(error)
-                            }
-                        }}>Bestätigen</DropdownMenuItem>
                         <DropdownMenuItem onClick={() => router.push(`restaurant-requests/${request.id}`)}>Bearbeiten</DropdownMenuItem>
                         <DropdownMenuItem variant="destructive">Löschen</DropdownMenuItem>
                     </DropdownMenuContent>
