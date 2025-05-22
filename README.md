@@ -1,6 +1,6 @@
 # vuud
 
-**vuud** ist eine Plattform, auf der Nutzer\:innen Essen bestellen können. Die Anwendung wurde mit [Next.js](https://nextjs.org) entwickelt und ist auf hohe Performance und Skalierbarkeit ausgelegt.
+**vuud** is a platform where users can order food. The application is built with [Next.js](https://nextjs.org) and is designed for high performance and scalability.
 
 ## Getting Started
 
