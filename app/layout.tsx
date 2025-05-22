@@ -1,4 +1,5 @@
 "use client"
+
 import "./globals.css";
 import { SfProDisplay } from "sf-pro/display";
 import { ReactNode } from "react";

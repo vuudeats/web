@@ -17,8 +17,8 @@ export default function LoginForm() {
 
   const router = useRouter()
 
-  const {data: session, status} = useSession();
-  
+  const { data: session, status } = useSession();
+
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -28,8 +28,8 @@ export default function LoginForm() {
   })
 
 
-  useEffect(()=>{
-    if(session?.user) return router.push("/")
+  useEffect(() => {
+    if (session?.user) return router.push("/")
   })
 
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
@@ -42,7 +42,7 @@ export default function LoginForm() {
       })
       console.log(result)
       console.log('Sign in result:', result);
-      
+
       if (result?.error) {
         setMessage("Email oder Passwort sind falsch!")
       } else {

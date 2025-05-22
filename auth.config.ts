@@ -62,6 +62,6 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: '/login',
   },
-} 
+}
 
-export const { auth, signIn, signOut } = NextAuth(authOptions) 
+export const { auth, signIn, signOut } = NextAuth(authOptions)

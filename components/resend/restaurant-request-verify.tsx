@@ -1,9 +1,9 @@
 type RestaurantRequestVerifyType = {
-    firstname: string,
-    lastname: string, 
-    
+  firstname: string,
+  lastname: string,
+
 }
 
-export default function RestaurantRequestVerify(){
-    return <div></div>
+export default function RestaurantRequestVerify() {
+  return <div></div>
 }

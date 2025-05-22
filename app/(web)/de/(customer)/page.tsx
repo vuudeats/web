@@ -1,4 +1,5 @@
 "use client"
+
 import { getAddress } from "@/actions/user/google/get-address";
 import LoginForm from "@/components/form/login-form";
 import SearchWeb from "@/components/navigation/web/search-web";
@@ -54,9 +55,8 @@ export default function Home() {
   const handleSuggestionClick = (suggestion: string) => {
     setInputValue(suggestion);
     setSuggestions([])
-
-
   };
+
   return (
     <div className="md:flex flex-col h-screen py-10">
       {/* <div className="bg-[url(/food4k.jpg)] w-full rounded-2xl"> */}

@@ -14,87 +14,86 @@ import { getUserById } from "@/services/user"
 import { UserRoundIcon } from "lucide-react"
 
 type EditRestaurantRequestFormType = {
-    restaurantRequest: RestaurantRequest & { user: User }
+  restaurantRequest: RestaurantRequest & { user: User }
 }
 
 export default function EditRestaurantRequestForm({
-    restaurantRequest
+  restaurantRequest
 }: EditRestaurantRequestFormType) {
-    const [address, setAddress] = useState("")
+  const [address, setAddress] = useState("")
 
-    useEffect(() => {
-        if (!restaurantRequest?.restaurantAddress) return;
+  useEffect(() => {
+    if (!restaurantRequest?.restaurantAddress) return;
 
-        const getAddress = async () => {
-            const data = await getAddressByPlaceId(restaurantRequest.restaurantAddress);
+    const getAddress = async () => {
+      const data = await getAddressByPlaceId(restaurantRequest.restaurantAddress);
 
-            if (!data) return;
+      if (!data) return;
 
-            setAddress(data.address);
+      setAddress(data.address);
 
-            form.reset({ restaurantAddress: data.address });
-        };
+      form.reset({ restaurantAddress: data.address });
+    };
 
+    getAddress();
+  }, []);
 
-        getAddress();
-    }, []);
+  const form = useForm<z.infer<typeof restaurantRequestSchema>>({
+    resolver: zodResolver(restaurantRequestSchema),
+    defaultValues: restaurantRequest ? {
+      restaurantName: restaurantRequest.restaurantName,
+      restaurantAddress: address,
+      deliveryMethod: restaurantRequest.deliveryMethod
+    } : {
+      restaurantName: "s",
+      restaurantAddress: "s",
+      deliveryMethod: "",
+    },
+  });
 
-    const form = useForm<z.infer<typeof restaurantRequestSchema>>({
-        resolver: zodResolver(restaurantRequestSchema),
-        defaultValues: restaurantRequest ? {
-            restaurantName: restaurantRequest.restaurantName,
-            restaurantAddress: address,
-            deliveryMethod: restaurantRequest.deliveryMethod
-        } : {
-            restaurantName: "s",
-            restaurantAddress: "s",
-            deliveryMethod: "",
-        },
-    });
+  const onSubmit = () => {
 
-    const onSubmit = () => {
+  }
 
-    }
+  return <Form {...form}>
+    <form
+      onSubmit={form.handleSubmit(onSubmit)}
+      className="bg-white w-xl flex flex-col gap-2"
+    >
+      <div className="opacity-50 mb-3">
+        <p>Anfrage von:</p>
+        <div className="flex gap-2">
+          <p>{restaurantRequest.user.firstname} <span>{restaurantRequest.user.lastname}</span></p>
+          <p>{restaurantRequest.user.email}</p>
+        </div>
+      </div>
 
-    return <Form {...form}>
-        <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="bg-white w-xl flex flex-col gap-2"
-        >
-            <div className="opacity-50 mb-3">
-                <p>Anfrage von:</p>
-                <div className="flex gap-2">
-                    <p>{restaurantRequest.user.firstname} <span>{restaurantRequest.user.lastname}</span></p>
-                    <p>{restaurantRequest.user.email}</p>
-                </div>
+      <FormField
+        control={form.control}
+        name="restaurantName"
+        render={({ field }) => (
+          <FormItem>
+            <div className="flex flex-col items-end gap-0">
+              <FormControl>
+                <Input placeholder="Name des Restaurants" {...field} />
+              </FormControl>
             </div>
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="restaurantAddress"
+        render={({ field }) => (
+          <FormItem className="relative w-full">
+            <FormControl>
+              <Input
+                placeholder="Adresse des Restaurants"
+                {...field}
+              />
+            </FormControl>
 
-            <FormField
-                control={form.control}
-                name="restaurantName"
-                render={({ field }) => (
-                    <FormItem>
-                        <div className="flex flex-col items-end gap-0">
-                            <FormControl>
-                                <Input placeholder="Name des Restaurants" {...field} />
-                            </FormControl>
-                        </div>
-                    </FormItem>
-                )}
-            />
-            <FormField
-                control={form.control}
-                name="restaurantAddress"
-                render={({ field }) => (
-                    <FormItem className="relative w-full">
-                        <FormControl>
-                            <Input
-                                placeholder="Adresse des Restaurants"
-                                {...field}
-                            />
-                        </FormControl>
-
-                        {/* {suggestions.length > 0 && !isSuggested && (
+            {/* {suggestions.length > 0 && !isSuggested && (
                             <DropdownMenuVuud>
                                 {suggestions.map((suggestion, index) => (
                                     <DropdownItemVuud
@@ -112,23 +111,23 @@ export default function EditRestaurantRequestForm({
                                 ))}
                             </DropdownMenuVuud>
                         )} */}
-                    </FormItem>
-                )}
-            />
-            <FormField
-                control={form.control}
-                name="deliveryMethod"
-                render={({ field }) => (
-                    <FormItem className="w-full h-9">
-                        <FormControl>
-                            <DeliveryMethodSelection field={field} />
-                        </FormControl>
-                    </FormItem>
-                )}
-            />
-            <div className="flex flex-col gap-2 w-full mt-3">
-                <Button variant={"secondary"} type="submit">Änderung Speichern</Button>
-            </div>
-        </form>
-    </Form>
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="deliveryMethod"
+        render={({ field }) => (
+          <FormItem className="w-full h-9">
+            <FormControl>
+              <DeliveryMethodSelection field={field} />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+      <div className="flex flex-col gap-2 w-full mt-3">
+        <Button variant={"secondary"} type="submit">Änderung Speichern</Button>
+      </div>
+    </form>
+  </Form>
 }

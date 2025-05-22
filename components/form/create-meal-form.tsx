@@ -1,4 +1,3 @@
-// components/form/create-meal-form.tsx
 "use client"
 
 import { useForm } from "react-hook-form"
@@ -25,10 +24,10 @@ export default function CreateMealForm() {
 
   const onSubmit = async (data: MealFormValues) => {
     console.log("Neues Essen:", data)
-    try{
+    try {
       const result = await createMeal(data);
-    } catch(error){
-
+    } catch (error) {
+      console.error("Fehler beim Erstellen des Gerichts:", error)
     }
   }
 

@@ -7,65 +7,67 @@ import { cn } from "@/lib/utils"
 import { SfProText } from "sf-pro/text"
 
 type ProfileType = {
-    user: string
+  user: string
 }
 
 export const Profile = ({ user }: ProfileType) => {
-    return <Popover>
-        <PopoverTrigger asChild>
-            <Button className="w-full px-6 py-8 rounded-none flex justify-start gap-3 items-center" variant={"ghost"}>
-                <div className="w-10 h-10 rounded-full bg-blue-400">
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button className="w-full px-6 py-8 rounded-none flex justify-start gap-3 items-center" variant={"ghost"}>
+          <div className="w-10 h-10 rounded-full bg-blue-400">
 
-                </div>
-                <div className="flex flex-col items-start">
-                    <p className="text-md font-bold">firstname</p>
-                    <p className={cn(SfProText.className, "text-xs text-muted-foreground")}>email@gmail.com</p>
-                </div>
-            </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-80">
-            <div className="grid gap-4">
-                <div className="space-y-2">
-                    <h4 className="font-medium leading-none">Dimensions</h4>
-                    <p className="text-sm text-muted-foreground">
-                        Set the dimensions for the layer.
-                    </p>
-                </div>
-                <div className="grid gap-2">
-                    <div className="grid grid-cols-3 items-center gap-4">
-                        <Label htmlFor="width">Width</Label>
-                        <Input
-                            id="width"
-                            defaultValue="100%"
-                            className="col-span-2 h-8"
-                        />
-                    </div>
-                    <div className="grid grid-cols-3 items-center gap-4">
-                        <Label htmlFor="maxWidth">Max. width</Label>
-                        <Input
-                            id="maxWidth"
-                            defaultValue="300px"
-                            className="col-span-2 h-8"
-                        />
-                    </div>
-                    <div className="grid grid-cols-3 items-center gap-4">
-                        <Label htmlFor="height">Height</Label>
-                        <Input
-                            id="height"
-                            defaultValue="25px"
-                            className="col-span-2 h-8"
-                        />
-                    </div>
-                    <div className="grid grid-cols-3 items-center gap-4">
-                        <Label htmlFor="maxHeight">Max. height</Label>
-                        <Input
-                            id="maxHeight"
-                            defaultValue="none"
-                            className="col-span-2 h-8"
-                        />
-                    </div>
-                </div>
+          </div>
+          <div className="flex flex-col items-start">
+            <p className="text-md font-bold">firstname</p>
+            <p className={cn(SfProText.className, "text-xs text-muted-foreground")}>email@gmail.com</p>
+          </div>
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-80">
+        <div className="grid gap-4">
+          <div className="space-y-2">
+            <h4 className="font-medium leading-none">Dimensions</h4>
+            <p className="text-sm text-muted-foreground">
+              Set the dimensions for the layer.
+            </p>
+          </div>
+          <div className="grid gap-2">
+            <div className="grid grid-cols-3 items-center gap-4">
+              <Label htmlFor="width">Width</Label>
+              <Input
+                id="width"
+                defaultValue="100%"
+                className="col-span-2 h-8"
+              />
             </div>
-        </PopoverContent>
+            <div className="grid grid-cols-3 items-center gap-4">
+              <Label htmlFor="maxWidth">Max. width</Label>
+              <Input
+                id="maxWidth"
+                defaultValue="300px"
+                className="col-span-2 h-8"
+              />
+            </div>
+            <div className="grid grid-cols-3 items-center gap-4">
+              <Label htmlFor="height">Height</Label>
+              <Input
+                id="height"
+                defaultValue="25px"
+                className="col-span-2 h-8"
+              />
+            </div>
+            <div className="grid grid-cols-3 items-center gap-4">
+              <Label htmlFor="maxHeight">Max. height</Label>
+              <Input
+                id="maxHeight"
+                defaultValue="none"
+                className="col-span-2 h-8"
+              />
+            </div>
+          </div>
+        </div>
+      </PopoverContent>
     </Popover>
+  )
 }
